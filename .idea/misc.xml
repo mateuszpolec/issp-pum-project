@@ -3,6 +3,10 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Programs/Projekty/issp-pum-project/app/src/main/res/layout/activity_main.xml" value="0.20520833333333333" />
+        <entry key="..\:/Programs/Projekty/issp-pum-project/app/src/main/res/layout/city_activity.xml" value="0.28306159420289856" />
+        <entry key="..\:/Programs/Projekty/issp-pum-project/app/src/main/res/layout/city_add_activity.xml" value="0.20520833333333333" />
+        <entry key="..\:/Programs/Projekty/issp-pum-project/app/src/main/res/layout/recycleview_row.xml" value="0.28306159420289856" />
         <entry key="..\:/Users/s316072/AndroidStudioProjects/issp-pum-project/app/src/main/res/layout/activity_main.xml" value="0.3416666666666667" />
       </map>
     </option>
