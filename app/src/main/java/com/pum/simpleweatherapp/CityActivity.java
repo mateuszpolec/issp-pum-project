@@ -1,11 +1,19 @@
 package com.pum.simpleweatherapp;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.squareup.picasso.Picasso;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.UUID;
 
 import retrofit2.Call;
@@ -21,6 +29,7 @@ public class CityActivity extends AppCompatActivity {
     private City mCurrentCity;
 
     private TextView tvCityName;
+    private ImageView ivCityWeatherIcon;
     private TextView tvWeatherInfo;
 
     @Override
@@ -38,6 +47,8 @@ public class CityActivity extends AppCompatActivity {
 
         tvCityName = findViewById(R.id.tvCityName);
         tvCityName.setText(mCurrentCity.getCityName());
+
+        ivCityWeatherIcon = findViewById(R.id.ivCityWeatherIcon);
 
         tvWeatherInfo = findViewById(R.id.tvWeatherInfo);
 
@@ -59,7 +70,22 @@ public class CityActivity extends AppCompatActivity {
 
                 assert res != null;
 
-                String sBuilder = "Temperature: " + res.main.temp;
+                String sBuilder = "Temperature: " +
+                        res.main.temp +
+                        "\n" +
+                        "Feels like: " +
+                        res.main.feels_like +
+                        "\n" +
+                        "Description: " +
+                        res.weather.get(0).description +
+                        "\n" +
+                        "Wind speed: " + res.wind.speed + "m/s from: " + res.wind.degrees +
+                        "\n" +
+                        "Pressure: " + res.main.pressure + "hPa";
+
+                String weatherIconUrl = String.format("https://openweathermap.org/img/wn/%s@4x.png", res.weather.get(0).icon);
+
+                Picasso.get().load(weatherIconUrl).into(ivCityWeatherIcon);
 
                 tvWeatherInfo.setText(sBuilder);
             }

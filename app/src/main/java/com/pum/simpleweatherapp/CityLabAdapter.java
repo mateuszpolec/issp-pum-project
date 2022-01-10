@@ -5,15 +5,19 @@ import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
-public class CityLabAdapter extends RecyclerView.Adapter<CityLabAdapter.CityViewHolder> {
+public class CityLabAdapter extends RecyclerView.Adapter<CityLabAdapter.CityViewHolder> implements Filterable {
 
     private CityLab mCityLab;
     private LayoutInflater mInflater;
@@ -79,6 +83,47 @@ public class CityLabAdapter extends RecyclerView.Adapter<CityLabAdapter.CityView
     {
         this.mClickListener = itemClickListener;
     }
+
+    @Override
+    public Filter getFilter()
+    {
+        return filter;
+    }
+
+    Filter filter = new Filter()
+    {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            List<City> f = new ArrayList<>();
+
+            if (constraint.toString().isEmpty())
+            {
+                f.addAll(mCityLab.getCities());
+            }
+            else
+            {
+                for (City c : mCityLab.getCities())
+                {
+                    if (c.getCityName().toLowerCase().contains(constraint.toString().toLowerCase()))
+                    {
+                        f.add(c);
+                    }
+                }
+            }
+
+            FilterResults fr = new FilterResults();
+            fr.values = f;
+            return fr;
+        }
+
+        @Override
+        protected void publishResults(final CharSequence constraint, FilterResults fr)
+        {
+            mCityLab.getCities().clear();
+            mCityLab.getCities().addAll((Collection<? extends City>) fr.values);
+            notifyDataSetChanged();
+        }
+    };
 
     public interface ItemClickListener
     {

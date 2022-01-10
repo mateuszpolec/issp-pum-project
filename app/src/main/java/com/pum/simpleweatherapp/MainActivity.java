@@ -9,6 +9,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,6 +32,8 @@ public class MainActivity extends AppCompatActivity implements CityLabAdapter.It
     private CityLab mCityLab;
     private CityLabAdapter mCityLabAdapter;
 
+    private SearchView svCitySearchInput;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +50,32 @@ public class MainActivity extends AppCompatActivity implements CityLabAdapter.It
         mCityLabAdapter = new CityLabAdapter(this);
         mCityLabAdapter.setClickListener(this);
         mRecyclerView.setAdapter(mCityLabAdapter);
+
+        svCitySearchInput = findViewById(R.id.svCitySearchInput);
+        svCitySearchInput.setQueryHint("Insert city name to search.");
+
+        svCitySearchInput.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                if (mCityLabAdapter.getItemCount() == 0)
+                {
+                    Toast.makeText(getApplicationContext(), "Results not found", Toast.LENGTH_SHORT).show();
+                }
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                mCityLabAdapter.getFilter().filter(newText);
+                return false;
+            }
+        });
+
+        svCitySearchInput.setOnCloseListener(() -> {
+            initialize();
+            mCityLabAdapter.notifyDataSetChanged();
+            return false;
+        });
     }
 
     @Override
